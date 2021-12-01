@@ -1,0 +1,44 @@
+<!--Game-->
+<html>
+
+<head>
+    <title>A Game</title>
+</head>
+
+<body>
+    <canvas style="border: 1px solid black;" id="mcanvas" width="200" height="200"></canvas>
+    <canvas style="border: 1px solid black;"  width="200" height="200"></canvas>
+    <canvas style="border: 1px solid black;"  width="200" height="200"></canvas>
+    <canvas style="border: 1px solid black;"  width="200" height="200"></canvas>
+    <script>
+        //    var canvas = document.getElementById("canvas")
+        //    var ct = canvas.getContext("experimental-webgl")
+        var canvas = document.querySelector('canvas');
+    
+        var draw = canvas.getContext("2d")
+        draw.font = "200px arial"
+        function change() {
+          
+            // var colors = ["red", "blue", "purple", "green", "yellow", "black", "orange"]
+            // // var Some_Colors_Random_Pick = colors[Math.floor(Math.random()*7)]      
+            // var Some_Colors_Random_Pick = colors[Math.floor(Math.random() * 7)]; 
+            // draw.fillStyle = Some_Colors_Random_Pick;
+
+            // draw.fillText(localStorage.getItem("remindme"), 200, 200, 200)
+                  canvas.addEventListener("mouseover", function(Event) { var x = 10; draw.fillRect(50, 50, 100, 100);   
+          draw.clearRect(window.innerWidth, window.innerHeight, window.innerWidth, window.innerHeight);  x += 10;  } )
+        }
+      
+        
+          
+         
+
+ 
+
+        
+      
+        change()
+    </script>
+</body>
+
+</html>

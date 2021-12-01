@@ -1,0 +1,147 @@
+<html>
+
+<head>
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body style="margin: 0px;" onkeypress="GetKey(event)">
+  <canvas id="canvas" style="background-color: rgb(207, 186, 186);"></canvas>
+  <img src="avatar.png" id="Avatar" hidden>
+  <audio id="audio" src="megalovania.wav">
+  </audio>
+  <script>
+    var SoundEffect = document.getElementById("audio")
+    var Cnvs = document.querySelector("canvas")
+    var Img = document.getElementById("Avatar")
+    var c = Cnvs.getContext("2d")
+    var TheKey;
+    var AvatarImgs = ["avatar.png", "avatar run2.png"]
+    var AvatarBackImg = ["avatar Back.png", "avatar run Back.png"]
+    var CirclingThroughAnArray = 0
+    var CordinatesOfX = 50
+    var CordinatesOfY = 500
+    var Ys_increment_value = 10
+    var WasTheAvatarEverCreated = false
+    var ARandomBolean = true
+    Cnvs.height = innerHeight
+    Cnvs.width = innerWidth
+    function GetKey(event) {
+      TheKey = event.keyCode
+      console.log(TheKey)
+      switch (TheKey) {
+        case 100:
+          Avatar_Animating_front()
+          break
+        case 97:
+          Avatar_Animating_back()
+          break
+        case 32:
+          SoundEffect.play()
+          setInterval(function () {
+            SoundEffect.play()
+          }, 120000)
+          break
+        case 109:
+          SoundEffect.pause()
+          break
+        default:
+          $("#Avatar").attr("src", "avatar.png")
+      }
+    }
+    class Obstacle {
+      constructor(x, y, width, height, color) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        this.color = String(color)
+      }
+      Add() {
+        c.fillStyle = this.color
+        var Was_The_Avatar_Ever_Created_If_So_Then_Execute_The_Following = WasTheAvatarEverCreated === true ? c.fillRect(this.x, this.y, this.width, this.height) : console.error("Failed to create an Avatar")
+      }
+    }
+    class Avatar {
+      constructor(src, x, y) {
+        this.src = src
+        this.x = x
+        this.y = y
+      }
+      Create () {
+        c.drawImage(this.src, this.x, this.y)
+        WasTheAvatarEverCreated = true
+      }
+    }
+    function Animating_Function_which_controls_all_Animation() {
+      requestAnimationFrame(Animating_Function_which_controls_all_Animation)
+      c.clearRect(0, 0, Cnvs.width, Cnvs.height)
+      var User = new Avatar(Img, CordinatesOfX, CordinatesOfY)
+      var Ob = new Obstacle(500, 600, 50, 50, "Navy")
+      Ob.Add()
+      if (ARandomBolean === true) {
+      User.Create()
+      }
+      function CollisonDectector(x1, x2, y1, y2) {
+      
+        var DistX = x1 - x2
+        var DistY = y1 - y2
+        return Math.sqrt(Math.pow(DistX, 2) + Math.pow(DistY, 2))
+      }
+
+
+      // if (User.y > Ob.y) {
+      //   var Ydistance = User.y - Ob.y
+      // }
+      // else if (User.y < Ob.y) {
+      //   var Ydistance = Ob.y - User.y
+      // }
+      // return Math.sqrt(Math.pow(Xdistance) + Math.pow(Ydistance))
+
+
+      var Colison = CollisonDectector(User.x, Ob.x, User.y, Ob.y)
+      if (Colison <= 110) {
+        User.y = Ob.y -= 150
+        ARandomBolean = false
+        User.Create()
+        console.log("COLLISON!")
+      }
+      else {
+        ARandomBolean = true
+      }
+    }
+
+    Animating_Function_which_controls_all_Animation()
+    function Avatar_Animating_front() {
+      $("#Avatar").attr("src", AvatarImgs[CirclingThroughAnArray])
+      var IfCirclingThroughAnArrayIstTrue2 = CirclingThroughAnArray === 1 ? CirclingThroughAnArray = 0 : CirclingThroughAnArray++;
+
+      if (CordinatesOfX < Cnvs.width) {
+        CordinatesOfX += 10
+      }
+      else if (CordinatesOfX > Cnvs.width) {
+        CordinatesOfX = 0
+      }
+    }
+
+    function Avatar_Animating_back() {
+      $("#Avatar").attr("src", AvatarBackImg[CirclingThroughAnArray])
+      var IS_THE_VARIABLE_CALLED_CirclingThroughAnArray_TRUE = CirclingThroughAnArray === 1 ? CirclingThroughAnArray = 0 : CirclingThroughAnArray++;
+      if (CordinatesOfX < Cnvs.width) {
+        CordinatesOfX -= 10
+      }
+      else if (CordinatesOfX > Cnvs.width) {
+        CordinatesOfX = 0
+      }
+      if (CordinatesOfX < 0) {
+        CordinatesOfX = Cnvs.width - 1
+      }
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>

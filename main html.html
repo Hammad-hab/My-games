@@ -1,0 +1,257 @@
+<html>
+
+<head>
+    <title>Game</title>
+    <!-- <script src="game script.js"></script> -->
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="XĜraph.js"></script>
+    <script src="XĜraph.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .null {
+            color: rgb(105, 29, 29)
+        }
+
+        dialog {
+            width: 40%;
+            height: 50%;
+        }
+
+        p {
+            font-family: arial;
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="enemy.jpg" id="aa" hidden>
+    <img src="Key.jpg" id="key" hidden>
+    <img src="fence.jpg" id="hha" hidden>
+    <img src="EnemUN.jpg" id="ene" hidden>
+    <!-- BODY HAS NOTHING -->
+    <canvas id="Canvas"></canvas>
+    <dialog id="opn-dia">
+        <img id="this_chn" src="avatar.jpg">
+        <p id="chnTxt"></p>
+    </dialog>
+    <script>
+        localStorage.setItem("dead?", "alive")
+        localStorage.setItem("killer", "no")
+        localStorage.setItem("SPWAN", "no")
+        localStorage.setItem("Dejavo", "no")
+        localStorage.getItem("NewLevel", "No, still on level 1")
+        localStorage.setItem("NOw", "Not now")
+        const canvas = document.querySelector("canvas")
+        var c = canvas.getContext("2d")
+        var fence = document.getElementById("hha")
+        var avatarImg = document.getElementById("ava")
+        canvas.width = innerWidth
+        canvas.height = innerHeight
+        var imgs = ["avatar.jpg", "avatar run2.jpg"]
+        var Enim = document.getElementById("aa")
+        var Enve = document.getElementById("ene")
+        var riddle = "I help travelers to see the path, I help the moon get it light at last, I help eyes see, I help you read these words to me"
+        var dia = document.getElementById("opn-dia")
+        var Ist = false
+        var IspKey = false
+        var IspHell = false
+        var IspRid = false
+        var WillPro3 = false
+        var WilProm = false
+        var T = false
+        var xr = 1300
+        var ie = 400
+        var cx = 100
+        var cy = 500
+        function ColDect(x1, x2, y1, y2) {
+            var DistX = x1 - x2
+            var DistY = y1 - y2
+            return Math.sqrt(Math.pow(DistX, 2) + Math.pow(DistY, 2))
+        }
+
+        // mouse tracker
+        var mouse = {
+            x: undefined,
+            y: undefined
+        }
+        var i = 0
+        canvas.addEventListener("mousemove", function () {
+            mouse.x = event.clientX
+            mouse.y = event.clientY
+
+            $("#ava").attr("src", imgs[i])
+            setInterval(function () {
+                i++
+                if (i >= 2) {
+                    i = 0
+                }
+            }, 500)
+
+        })
+
+        canvas.addEventListener("mousedown", function () {
+            $("#ava").attr("src", "killer.jpg")
+            localStorage.setItem("killer", "yes")
+        })
+
+        canvas.addEventListener("mouseup", function () {
+            localStorage.setItem("killer", "no")
+        })
+        // canvas.addEventListener("mouseleave", function () {
+        //     $("#ava").attr("src", "avatar stand.jpg")
+
+        // })
+
+        function Avatar(x, y, src) {
+
+            this.x = x
+            this.y = y
+            this.src = src
+            // this.width = width
+            // this.height = height
+            // this.color = color
+
+            this.face = function () {
+                // c.fillStyle = this.color
+                c.drawImage(this.src, this.x, this.y)
+            }
+            this.drawThis = function () {
+                this.face()
+            }
+        }
+
+        function Enemy(x, y) {
+            this.x = x
+            this.y = y
+            this.drawEn = function () {
+                c.drawImage(Enim, this.x, this.y)
+            }
+        }
+
+        function Sqrt(x, y, width, height, color) {
+            this.x = x
+            this.y = y
+            this.width = width
+            this.height = height
+            c.fillStyle = color
+            c.fillRect(this.x, this.y, this.width, this.height)
+        }
+        function Main() {
+            requestAnimationFrame(Main)
+            c.clearRect(0, 0, canvas.width, canvas.height)
+            var Sqr1 = new Avatar(50, 486, avatarImg)
+            if (localStorage.getItem("NOw") === "Now") {
+                ie -= 10
+                Sqr1.y = ie
+                if (ie === 100) {
+                 ie += 100
+                }
+            }
+
+            if (localStorage.getItem("dead?") === "dead") {
+                function tt () {
+                requestAnimationFrame(tt)
+                if (T === false) {
+                cx += 0.05
+                }
+                $("#aa").attr("src", "enemydead.jpg")
+                var En = new Enemy(1100, 400)
+                En.drawEn()
+                
+                var En2 = new Enemy(cx, 400)
+                $("#aa").attr("src","enemy.jpg")
+                En2.drawEn()
+                if (cx > canvas.width) {
+                    cx = canvas.width - 500
+                    T = true
+                }
+            }
+            tt()
+        }
+            else {
+                var En = new Enemy(1100, 400)
+                En.drawEn()
+            }
+            c.drawImage(fence, 850, 500)
+            if (mouse.x < 0) {
+                Sqr1.x = 0
+            }
+            else if (mouse.x > 1100) {
+                Sqr1.x = 1100
+            }
+            else {
+                Sqr1.x = mouse.x
+            }
+
+            Sqr1.drawThis()
+            // fence
+            c.fillStyle = "grey"
+            c.fillRect(0, 600, canvas.width, 300)
+            c.fillRect(0, 590, canvas.width, 20)
+            // collision // 
+            var colid = ColDect(Sqr1.x, En.x, Sqr1.y, En.y)
+            if (colid < 110 && localStorage.getItem("Dejavo") === "no") {
+                if (localStorage.getItem("dead?") === "dead") {
+
+                }
+                else if (localStorage.getItem("dead?") === "alive") {
+                    dia.showModal()
+                    $("#opn-dia img").attr("src", "talKf.jpg")
+                    $("#chnTxt").html("<b>Gaurd</b>: You cannot pass!")
+                    setTimeout(function () { dia.close(); Ist = true }, 4000)
+                    localStorage.setItem("SPAWN", "yes")
+                    var i = 500
+                    var canItalk = "Yes you can"
+                    var KeyAct = false
+                    localStorage.setItem("Dejavo", "Yes")
+                    // Key //
+                    function M() {
+                        requestAnimationFrame(M)
+                        c.drawImage(document.getElementById("key"), xr, i)
+
+                        if (i <= 500) {
+                            i += 5
+                        }
+                        else if (i > 500) {
+                            i -= 10
+                        }
+                        KeyAct = true
+                        var Colid3 = ColDect(Sqr1.x, xr, Sqr1.y, i)
+
+                     
+                    M()
+                }
+            }
+            }
+            else if (mouse.x > 1000) {
+                Sqr1.x = 1000
+            }
+            // kill the gaurd?
+            if (localStorage.getItem("killer") === "yes" && colid < 110) {
+                localStorage.setItem("dead?", "dead")
+            }
+        }
+
+        Main()
+
+        setInterval(function () {
+            if (localStorage.getItem("killer") === "yes") {
+
+            }
+            else {
+                $("#ava").attr("src", "avatar stand.jpg")
+            }
+        }, 500)
+
+
+        console.log("Dead")
+
+
+    </script>
+</body>
+
+</html>
